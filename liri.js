@@ -12,7 +12,7 @@ var request = process.argv[2];
 var item = process.argv.slice(3);
 var search = item.join("+");
 var bandsURL = "https://rest.bandsintown.com/artists/" + search + "/events?app_id=codingbootcamp";
-var omdbURL = "http://www.omdbapi.com/?t=" + search + "&apikey=triology";
+var omdbURL = "http://www.omdbapi.com/?t=" + search + "&apikey=bbb167e7";
 
 function bandsSearch() {
     axios.get(bandsURL).then(
@@ -28,35 +28,24 @@ function bandsSearch() {
 }
 
 function spotifySearch() {
-    var keys = require("./keys.js");
     var spotify = new Spotify(keys.spotify);
     var song = item;
 
-    if (item.length < 1) {
-        song = "The Sign - Ace of Base";
-    }
-
-    spotify.search({ type: "track", query: song}, function(err, data) {
+    spotify.search({ type: "track", query: song }, function (err, data) {
         if (err) {
-            console.log("Uh Oh! Error: " + err);
+            console.log("Error: " + err);
         }
         console.log("\n" + data.tracks.items[0].name + " - " + data.tracks.items[0].artists[0].name);
-        console.log("\n--Song Info--");
         console.log("Artist: " + data.tracks.items[0].artists[0].name);
-        console.log("Check it out: " + data.tracks.items[0].album.external_urls.spotify);
+        console.log("Listen: " + data.tracks.items[0].album.external_urls.spotify);
         console.log("Album: " + data.tracks.items[0].album.name);
-        console.log("---------------");
     });
 }
 
 function omdbSearch() {
 
-    // if (item.length < 1) {
-    //     console.log("Mr. Nobody");
-    // }
-
     axios.get(omdbURL).then(
-        function(response) {
+        function (response) {
             console.log("\n" + response.data.Title + " (" + response.data.Year + ")");
             console.log("\n--Movie Info--");
             console.log("Rating: " + response.data.imbdRating);
